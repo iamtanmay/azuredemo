@@ -5,19 +5,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>Vanilla JavaScript App</title>
+    <title>Prague Covid 19 Tracker</title>
 </head>
 
 <body>
     <main>
-    <h1>Vanilla JavaScript App</h1>
-    <p>Loading content from the API: <b id="name">...</b></p>
+    <h1>Prague Covid 19 Tracker</h1>
+    <p>Current COVID-19 cases in Prague: <b id="cases">...</b></p>
     </main>
 
     <script>
     (async function() {
-        const { text } = await( await fetch(`/api/message`)).json();
-        document.querySelector('#name').textContent = text;
+        var apiUrl = '/api/message';
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({a: 1, b: 'Czechia'})
+        }).then(response => {
+            return response.text();
+        }).then(data => {
+            document.querySelector('#cases').textContent = data;
+        }).catch(err => {
+            window.alert("Bad response from API");
+        });
     }())
     </script>
 </body>
